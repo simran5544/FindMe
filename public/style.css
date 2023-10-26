@@ -1,0 +1,169 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #00c6a3;
+    position: relative;
+}
+
+#container {
+    position: relative;
+    width: 400px; /* You can adjust this based on the size of your canvas */
+    height: 400px; /* You can adjust this based on the size of your canvas */
+}
+
+@font-face {
+    font-family: 'digital-7';
+    src: url('./digital-7__mono_.ttf'); /* Ensure you update this path */
+}
+
+input#numberInput {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Digital-7', sans-serif; /* Digital clock style font */
+    font-size: 5rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 35px;
+    width: 400px; /* Adjusted to possibly fit better with the digital font */
+    height: 100px;
+    text-align: center;
+    background-color: black;
+    color: #ffcd00;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s ease;
+    z-index: 2;
+}
+
+input#numberInput:focus {
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    outline: none;
+}
+
+
+.clear-btn {
+    position: absolute;
+    top: 18%; /* Adjust to position it right below the input */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    z-index: 2;
+}
+
+.clear-btn:hover {
+    background-color: #486785;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+canvas {
+    z-index: 1;
+   height: 300px;
+   width: 300px;
+   
+}
+
+
+
+
+.btn-container {
+    position: absolute;
+    bottom: 15%; /* Adjusted to move the container up */
+    left: 50%;
+    transform: translate(-50%, 0);
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    height: 3rem;
+    padding: 10px;
+    background-color: black;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+
+.call-btn, .hang-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 85px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 10px; /* Adds space between the buttons */
+    width: calc(50% - 20px); /* Subtracting the margin to ensure they fit side by side */
+}
+
+
+.call-btn {
+    background-color: rgb(29, 188, 29);
+    color: white;
+}
+
+.call-btn:hover {
+    background-color: darkgreen;
+}
+
+.hang-btn {
+    background-color: red;
+    color: white;
+}
+
+.hang-btn:hover {
+    background-color: darkred;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    
+    width: 60%;
+    height: 20%;
+     /* Black with a bit of transparency */
+    z-index: 1000; /* Make sure it's on top of everything else */
+    justify-content: center;
+    align-items: center;
+    display: flex; /* Flexbox to center the modal content */
+    font-family: 'Arial', sans-serif; /* Example font, you can replace this with any font you like */
+}
+#modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 30px;
+    
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.2rem;
+    z-index: 1000; /* to ensure it's above other content */
+}
+.modal-content {
+    padding: 20px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 30px;
+    text-align: center;
+}
+
+.modal-content p {
+    color: white;
+    font-size: 1em; /* Adjust to your preference */
+}
+
+#numberInput::placeholder {
+    color: rgba(255, 255, 0, 0.5); /* This is a light transparent yellow */
+    opacity: 1; /* Needed to ensure the color (even with transparency) appears as expected */
+}
