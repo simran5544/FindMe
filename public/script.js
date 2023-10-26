@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let streamRef; 
     let callTimeout;
+    let peerConnection;
 
     modal.style.display = 'none';
 
@@ -41,8 +42,53 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update the connection URL to the Repl.it backend URL
     const socket = io.connect('https://find-me--sairambanoth5.repl.co');
 
+    const configuration = {
+        iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' }
+        ]
+    };
+
+    function createPeerConnection() {
+        peerConnection = new RTCPeerConnection(configuration);
+
+        // Send ICE candidates to the other peer
+        peerConnection.onicecandidate = function(event) {
+            if (event.candidate) {
+                socket.emit('ice_candidate', event.candidate);
+            }
+        };
+
+        // Handle the creation of the answer once a remote stream is added.
+        peerConnection.ontrack = function(event) {
+            const audio = new Audio();
+            audio.srcObject = event.streams[0];
+            audio.play();
+        };
+
+        // Add the local stream to the connection to send it to the other peer
+        streamRef.getTracks().forEach(track => peerConnection.addTrack(track, streamRef));
+    }
+
     socket.on('connect', function() {
         console.log('Connected to the server');
+    });
+
+    socket.on('offer', (offer) => {
+        createPeerConnection();
+        peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+            .then(() => peerConnection.createAnswer())
+            .then(answer => peerConnection.setLocalDescription(answer))
+            .then(() => {
+                socket.emit('answer', peerConnection.localDescription);
+            });
+    });
+
+    socket.on('answer', (answer) => {
+        peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+    });
+
+    socket.on('ice_candidate', (iceCandidate) => {
+        peerConnection.addIceCandidate(new RTCIceCandidate(iceCandidate));
     });
 
     socket.on('connected_to_peer', function() {
@@ -78,7 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
         navigator.mediaDevices.getUserMedia({ audio: true })
             .then(stream => {
                 streamRef = stream;
-                socket.emit('initiate_call', input.value);
+                createPeerConnection();
+
+                peerConnection.createOffer()
+                .then(offer => peerConnection.setLocalDescription(offer))
+                .then(() => {
+                    socket.emit('initiate_call', input.value, peerConnection.localDescription);
+                });
             })
             .catch(err => {
                 console.warn('Error accessing microphone:', err);
@@ -94,6 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.emit('end_call');
         clearTimeout(callTimeout);
     });
+
 });
 
 function clearInput() {
