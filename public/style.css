@@ -25,7 +25,7 @@ input#numberInput {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Digital-7', sans-serif; /* Digital clock style font */
-    font-size: 5rem;
+    font-size: 3.5rem;
     padding: 10px 15px;
     border: none;
     border-radius: 35px;
