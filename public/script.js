@@ -114,21 +114,48 @@ document.addEventListener('DOMContentLoaded', function() {
     //     setTimeout(hideModal, 2000);
     //     clearInput();
     // });
+
+
+    // socket.on('disconnected_from_peer', function() {
+    //     // Immediate transition to red
+    //     document.body.style.transition = "background-color 0.2s";
+    //     document.body.style.backgroundColor = 'red';
+    
+    //     // Delayed transition back to original color
+    //     setTimeout(() => {
+    //         document.body.style.backgroundColor = '#00c6a3';
+    //     }, 200);
+    
+    //     showModal('Disconnected from the user');
+    //     setTimeout(hideModal, 2000);
+    //     clearInput();
+    // });
+    
     socket.on('disconnected_from_peer', function() {
-        // Immediate transition to red
+        if (streamRef) {
+            streamRef.getTracks().forEach(track => track.stop());
+        }
+        
+        // Stop any playing audio from the remote stream
+        const audioElements = document.querySelectorAll('audio');
+        audioElements.forEach(audio => {
+            if (audio.srcObject) {
+                audio.srcObject.getTracks().forEach(track => track.stop());
+                audio.srcObject = null;
+            }
+        });
+    
         document.body.style.transition = "background-color 0.2s";
         document.body.style.backgroundColor = 'red';
-    
-        // Delayed transition back to original color
         setTimeout(() => {
             document.body.style.backgroundColor = '#00c6a3';
         }, 200);
-    
         showModal('Disconnected from the user');
         setTimeout(hideModal, 2000);
         clearInput();
     });
     
+
 
     socket.on('clear_input', function() {
         clearInput();
