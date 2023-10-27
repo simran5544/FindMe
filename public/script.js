@@ -104,16 +104,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 60000); // Updated this line to 60000ms (which is 1 minute)
     });
 
+    // socket.on('disconnected_from_peer', function() {
+    //     document.body.style.transition = "background-color 0.2s";
+    //     document.body.style.backgroundColor = 'red';
+    //     setTimeout(() => {
+    //         document.body.style.backgroundColor = '#00c6a3';
+    //     }, 200);
+    //     showModal('Disconnected from the user');
+    //     setTimeout(hideModal, 2000);
+    //     clearInput();
+    // });
     socket.on('disconnected_from_peer', function() {
+        // Immediate transition to red
         document.body.style.transition = "background-color 0.2s";
         document.body.style.backgroundColor = 'red';
+    
+        // Delayed transition back to original color
         setTimeout(() => {
             document.body.style.backgroundColor = '#00c6a3';
         }, 200);
+    
         showModal('Disconnected from the user');
         setTimeout(hideModal, 2000);
         clearInput();
     });
+    
 
     socket.on('clear_input', function() {
         clearInput();
