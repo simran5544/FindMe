@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 streamRef.getTracks().forEach(track => track.stop());
             }
             socket.emit('end_call');
-        }, 30000);
+        }, 60000); // Updated this line to 60000ms (which is 1 minute)
     });
 
     socket.on('disconnected_from_peer', function() {
