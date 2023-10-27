@@ -25,12 +25,12 @@ input#numberInput {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: 'Digital-7', sans-serif; /* Digital clock style font */
-    font-size: 3.5rem;
+    font-size: 4rem;
     padding: 10px 15px;
     border: none;
     border-radius: 35px;
     width: 400px; /* Adjusted to possibly fit better with the digital font */
-    height: 200px;
+    height: 100px;
     text-align: center;
     background-color: black;
     color: #ffcd00;
